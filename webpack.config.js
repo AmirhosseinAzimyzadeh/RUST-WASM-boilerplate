@@ -7,16 +7,21 @@ module.exports = () => {
   return {
     entry: './index.js',
     output: {
-      path: path.resolve(__dirname, 'dist/[name].[hash].js'),
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].[contenthash].js',
     },
     plugins: [
+      new WasmPackPlugin({ crateDirectory: path.resolve(__dirname, '.') }),
       new HTMLWebpackPlugin({
         template: 'index.html',
       }),
       new webpack.ProvidePlugin({
         TextEncoder: ['text-encoding', 'TextEncoder'],
         TextDecoder: ['text-encoding', 'TextDecoder'],
-      })
+      }),
     ],
+    experiments: {
+      asyncWebAssembly: true,
+        },
   };
 };
